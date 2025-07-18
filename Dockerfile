@@ -35,10 +35,6 @@ RUN ash <<'EOF'
 
     python3 -m venv /usr/local/pylib
     source /usr/local/pylib/bin/activate
-    # NOTE: TODO As of 2025/01/21, adding this GCC flag is necessary to avoid
-    # build fails for shapely on GCC 14
-    # (see https://github.com/shapely/shapely/issues/2081)
-    CFLAGS="-Wno-error=incompatible-pointer-types" \
     pip install \
         gdal \
         geopandas \
