@@ -1,0 +1,57 @@
+# Author: Daniel Rode
+
+
+# https://docs.docker.com/reference/dockerfile/
+
+
+FROM alpine:edge
+
+LABEL Author="Daniel Rode"
+
+# Install Alpine Linux packages for building Python libraries
+RUN ash <<'EOF'
+    set -e  # Exit on error
+
+    apk update
+    apk add \
+        R \
+        R-dev \
+        g++ \
+        gcc \
+        gdal-dev \
+        geos-dev \
+        make \
+        pdal-dev \
+        proj-dev \
+        proj-util \
+        py3-pip \
+        python3-dev \
+    ;
+EOF
+
+# Build and download Python libraries via pip
+RUN ash <<'EOF'
+    set -e  # Exit on error
+
+    python3 -m venv /usr/local/pylib
+    source /usr/local/pylib/bin/activate
+    # NOTE: TODO As of 2025/01/21, adding this GCC flag is necessary to avoid
+    # build fails for shapely on GCC 14
+    # (see https://github.com/shapely/shapely/issues/2081)
+    CFLAGS="-Wno-error=incompatible-pointer-types" \
+    pip install \
+        gdal \
+        geopandas \
+        pathos \
+        pdal \
+        rasterio \
+        rasterstats \
+        rpy2 \
+        scikit-learn \
+        seaborn \
+        xmltodict \
+    ;
+EOF
+
+# Add Python venv and utility scripts to path
+ENV PATH="/usr/local/pylib/bin:$PATH"
