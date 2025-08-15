@@ -12,8 +12,7 @@ LABEL Author="Daniel Rode"
 RUN ash <<'EOF'
     set -e  # Exit on error
 
-    apk update
-    apk add \
+    apk add --no-cache \
         R \
         R-dev \
         g++ \
