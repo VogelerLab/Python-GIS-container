@@ -8,7 +8,7 @@ FROM alpine:edge
 
 LABEL Author="Daniel Rode"
 
-# Install Alpine Linux packages for building Python libraries
+# Install Alpine Linux packages for building Python libraries and runtimes
 RUN ash <<'EOF'
     set -e  # Exit on error
 
@@ -23,6 +23,7 @@ RUN ash <<'EOF'
         pdal-dev \
         proj-dev \
         proj-util \
+        proj-data \
         py3-pip \
         python3-dev \
     ;
